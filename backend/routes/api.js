@@ -1,23 +1,36 @@
 var express = require('express');
 var router = express.Router();
 const axios = require('axios');
+var parseString = require('xml2js').parseString;
+const util = require('util');
+// const bodyParser = require('body-parser');
+console.log(`HI`)
 
-
-
-function api (req, res){
-    var url =  'http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="9410809699939267291452"></TrackID></TrackRequest>';
-
+const getApi = (req, res, next) => {
+    var url = `http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="${req.body.package}"></TrackID></TrackRequest>`;
+    // var url =  'http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="9410809699939267291452"></TrackID></TrackRequest>';
+    console.log(`req.body`, req.body);
     // axios({
     //     method: 'get',
-    //     url: url,
+    //     url: url
+    
     //     responseType:'document'
     // })
     axios.get(url,{
         responseType: 'document'
     })
+    
         .then(data => {
-            console.log(data.data);
-            res.send(data.data);
+            
+            return data.data
+            //res.send(result); //formerly data.data
+        })
+        .then(data => {
+            let result = "";
+            parseString(data, function (err, result) {
+                console.log(result);
+                res.send(util.inspect(result.TrackResponse, false, null));
+            });
         })
         // .then(obj => {
         //     (obj, function (err, result) {
@@ -27,7 +40,7 @@ function api (req, res){
         //     // console.log(`obj`, obj)
         //   })
         .catch(err => {
-            console.log(`Backend Fetch err: `, err)
+            throw err;
         })
 }
 //    fetch('https://secure.shippingapis.com/ShippingAPI.dll/?API=TrackV2')
@@ -41,6 +54,6 @@ function api (req, res){
 //         })
 // }
 
-router.get('/', api);
+router.post('/', getApi);
 
 module.exports = router;
