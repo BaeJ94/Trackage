@@ -22,8 +22,10 @@ class App extends Component {
     axios.post('/api', {package: trackNum}) 
       .then((res) =>{
         this.setState({
-          response: res.data
+          response: res.data.TrackResponse.TrackInfo[0].$.ID + res.data.TrackResponse.TrackInfo[0].TrackSummary
         })
+        //Use .map or similar object method to filter into into bullets or paragraphs
+        
         console.log(res.data);
       })
       .catch(err => {
@@ -37,12 +39,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1 >HI! </h1>
-          <input onChange={this.handleInput} value={this.state.trackNum} id="trackNum" placeholder="Please Enter Your Tracking Number"></input> 
-          <br/>
-          <br/>
-          <button onClick={this.handleTrackingRequest} type='submit' id="butt">Submit</button>
-          <p>{this.state.response}</p>
+        <h1>Welcome to TRACKAGE</h1>
+        <p>Trackage is a site that lets you enter your tracking number from UPS, USPS, Fedex or DHL and displays all the info about that package.</p> 
+        <input onChange={this.handleInput} value={this.state.trackNum} id="trackNum" placeholder="Please Enter Tracking Number"></input> 
+        <br/>
+        <br/>
+        <button onClick={this.handleTrackingRequest} type='submit' id="butt">Submit</button>
+        <p>{this.state.response}</p>
         <Switch>
           <Route exact path='/trackinfo'/>
         </Switch>
