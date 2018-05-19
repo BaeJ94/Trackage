@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React,{Component} from 'react';
 
-class settings extends React.Component{
+class Settings extends React.Component{
     constructor(){
         super();
         this.state = {
@@ -18,4 +18,4 @@ class settings extends React.Component{
     }
 }
 
-export default settings;
+export default Settings;
