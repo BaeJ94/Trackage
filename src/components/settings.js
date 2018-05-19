@@ -11,7 +11,7 @@ class Settings extends React.Component{
     render(){
         return(
             <div>
-                <h1>Settings</h1>
+                <h3 className='title'>Settings</h3>
                 <p>Fix How Your information is displayed here</p>
             </div>
         )

@@ -30,9 +30,12 @@
 .App{
   height:90vh;
   }
-  
+
+.title{
+  text-align: left;
+  margin-left: 37%;
+}
 #trackNum{
-  margin-top: 5%;
   width:25%;
   text-align: center;
 }
