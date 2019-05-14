@@ -7,7 +7,7 @@ const util = require('util');
 console.log(`HI`)
 
 const getApi = (req, res, next) => {
-    var url = `http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="${req.body.package}"></TrackID></TrackRequest>`;
+    const url = `http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="${req.body.package}"></TrackID></TrackRequest>`;
     // var url =  'http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&XML=<?xml version="1.0" encoding="UTF-8" ?><TrackRequest USERID="919199400190"><TrackID ID="9410809699939267291452"></TrackID></TrackRequest>';
     console.log(`req.body`, req.body);
 

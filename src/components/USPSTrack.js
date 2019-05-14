@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
-class Tracking extends React.Component{
+//
+class USPSTrack extends React.Component{
     constructor(){
         super();
         this.state = {
             trackNum: '',
-            response: ''
+            Identity: '',
+            TrackDeet: '',
+            TrackSum: ''
         }
     }
     handleInput = (e) => {
@@ -14,17 +16,22 @@ class Tracking extends React.Component{
           trackNum: e.target.value
         })
     }
+   
     
     handleTrackingRequest = () =>{
         let {trackNum} = this.state;
         axios.post('/api', {package: trackNum}) 
             .then((res) =>{
+                console.log(res.data.TrackResponse.TrackInfo[0].TrackDetail)
+                //let blah = res.data.TrackResponse.TrackInfo[0].values.map();
                 this.setState({
-                    response: `${res.data.TrackResponse.TrackInfo[0].$.ID} \n ${res.data.TrackResponse.TrackInfo[0].TrackSummary}`
+                    Identity: res.data.TrackResponse.TrackInfo[0].$.ID,
+                    TrackDeets: res.data.TrackResponse.TrackInfo[0].TrackDetail,
+                    TrackSum: res.data.TrackResponse.TrackInfo[0].TrackSummary
                 })
             //Use .map or similar object method to filter into into bullets or paragraphs
             
-            console.log(res.data);
+            console.log(res.data.TrackResponse.TrackInfo[0]);
             })
             .catch(err => {
                 throw err;
@@ -33,8 +40,17 @@ class Tracking extends React.Component{
                 trackNum: ''
             })
     }
+
     
     render(){
+        let theDeets = '';
+
+        if (this.state.TrackDeets) {
+            theDeets = this.state.TrackDeets.map((detail) => {
+                return (<li> {detail} </li>)
+            })
+        }
+
         return(
             <div>
                 <h3 className='title'>Track</h3>
@@ -42,10 +58,12 @@ class Tracking extends React.Component{
                 <br/>
                 <br/>
                 <button onClick={this.handleTrackingRequest} type='submit' id="butt">Submit</button>
-                <p>{this.state.response}</p>
+                <p>{this.state.Identity}</p>
+                <ul>{theDeets}</ul>
+                <p>{this.state.TrackSum}</p>
             </div>
         )
     }
 }
 
-export default Tracking;
+export default USPSTrack;
